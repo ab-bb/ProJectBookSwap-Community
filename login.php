@@ -18,12 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     if ($identity === '' || $password === '') {
+<<<<<<< HEAD
 
     $error = 'กรุณากรอก Username/Email และ Password';
 
     } elseif (strlen($identity) > 100 || strlen($password) > 255) {
 
     $error = 'ข้อมูลที่กรอกยาวเกินกำหนด';
+=======
+        $error = 'กรุณากรอก Username/Email และ Password';
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
 
     } else {
         try {

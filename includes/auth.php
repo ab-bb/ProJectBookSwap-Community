@@ -24,6 +24,7 @@ function verify_csrf(): void
         !hash_equals($_SESSION['csrf_token'], $token)
     ) {
         http_response_code(403);
+<<<<<<< HEAD
         exit('Invalid CSRF token. Please refresh and try again.');
     }
 }
@@ -39,11 +40,30 @@ function is_logged_in(): bool
 function require_login(): void
 {
     if (!is_logged_in()) {
+=======
+        exit('คำขอไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
+    }
+}
+
+// ตรวจสอบสถานะ Login
+function require_login(): void
+{
+    if (empty($_SESSION['user_id'])) {
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
         header('Location: login.php');
         exit;
     }
 }
 
+<<<<<<< HEAD
+=======
+// ตรวจสอบว่า Login อยู่หรือไม่
+function is_logged_in(): bool
+{
+    return !empty($_SESSION['user_id']);
+}
+
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
 // ป้องกัน XSS
 function e($value): string
 {
@@ -53,6 +73,7 @@ function e($value): string
         'UTF-8'
     );
 }
+<<<<<<< HEAD
 
 // ดึง User ID
 function current_user_id(): ?int
@@ -61,3 +82,5 @@ function current_user_id(): ?int
         ? (int)$_SESSION['user_id']
         : null;
 }
+=======
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887

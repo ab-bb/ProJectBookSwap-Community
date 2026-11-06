@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!preg_match('/^[\p{L}\p{N}_]{3,50}$/u', $username)) {
         $error = 'Username ต้องมี 3-50 ตัวอักษร และใช้ตัวอักษร ตัวเลข หรือ _ เท่านั้น';
 
+<<<<<<< HEAD
     } elseif (
         strlen($email) > 100 ||
         !filter_var($email, FILTER_VALIDATE_EMAIL)
@@ -40,6 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         strlen($password) > 72
     ) {
         $error = 'Password ต้องมีความยาว 8-72 ไบต์';
+=======
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'รูปแบบ Email ไม่ถูกต้อง';
+
+    } elseif (strlen($password) < 8) {
+        $error = 'Password ต้องมีอย่างน้อย 8 ตัวอักษร';
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
 
     } elseif ($password !== $confirm) {
         $error = 'Password และ Confirm Password ไม่ตรงกัน';

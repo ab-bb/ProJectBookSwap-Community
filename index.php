@@ -2,6 +2,10 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
 require_once __DIR__ . '/includes/auth.php';
 
 $currentUserPoints = 0;
@@ -17,6 +21,12 @@ if (is_logged_in()) {
     $stmtUser->fetch();
     $stmtUser->close();
 }
+<<<<<<< HEAD
+=======
+=======
+require_once __DIR__ . '/db.php';
+>>>>>>> 0ffc3b574ed2569fc4f3197e64c04ca930bc9038
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
 
 $sql = "
     SELECT
@@ -72,17 +82,24 @@ $stmt->close();
 </head>
 <body>
 <div class="container">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
     <div style="text-align:right; margin-bottom:20px;">
 
     <?php if (is_logged_in()): ?>
         สวัสดี @<?= e($_SESSION['username']) ?>
         <p>💰 แต้มของคุณ: <?= e($currentUserPoints) ?> แต้ม</p>
+<<<<<<< HEAD
         <a href="add_book.php"
             style="background:#27ae60;color:white;
             padding:10px 15px;border-radius:6px;
             text-decoration:none;display:inline-block;">
             + ลงทะเบียนหนังสือ
         </a>
+=======
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
 
         <form action="logout.php" method="POST"
               style="display:inline;">
@@ -108,6 +125,7 @@ $stmt->close();
     <?php endif; ?>
 
 </div>
+<<<<<<< HEAD
     <?php if (isset($_GET['added']) && $_GET['added'] === '1'): ?>
 
         <div style="
@@ -121,6 +139,10 @@ $stmt->close();
     </div>
 
 <?php endif; ?>
+=======
+=======
+>>>>>>> 0ffc3b574ed2569fc4f3197e64c04ca930bc9038
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
     <h1>📚 BookSwap Community</h1>
     <p>ยินดีต้อนรับสู่ระบบแลกเปลี่ยนหนังสือสำหรับชาวหอสมุด ปลอดภัยด้วยแต้มมัดจำผ่านระบบกลาง</p>
     <hr style="border: 0; height: 1px; background: #dcdde1;">
@@ -133,6 +155,7 @@ $stmt->close();
         <div class="grid">
             <?php foreach ($books as $book): ?>
                 <div class="card">
+<<<<<<< HEAD
                     <?php if (!empty($book['photo_url'])): ?>
 
                         <img
@@ -147,6 +170,8 @@ $stmt->close();
                             "
                         >
                     <?php endif; ?>
+=======
+>>>>>>> 5a51791a82dd0b36e4b4ce20b99d39c6e66a0887
                     <h3><?php echo htmlspecialchars($book['title']); ?></h3>
                     <p><strong>ผู้เขียน:</strong> <?php echo htmlspecialchars($book['author']); ?></p>
                     <p><strong>หมวดหมู่:</strong> <span class="badge"><?php echo htmlspecialchars($book['category']); ?></span></p>
