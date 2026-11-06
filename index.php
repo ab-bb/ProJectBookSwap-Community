@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+<<<<<<< HEAD
 require_once __DIR__ . '/includes/auth.php';
 
 $currentUserPoints = 0;
@@ -17,6 +18,9 @@ if (is_logged_in()) {
     $stmtUser->fetch();
     $stmtUser->close();
 }
+=======
+require_once __DIR__ . '/db.php';
+>>>>>>> 0ffc3b574ed2569fc4f3197e64c04ca930bc9038
 
 $sql = "
     SELECT
@@ -72,6 +76,7 @@ $stmt->close();
 </head>
 <body>
 <div class="container">
+<<<<<<< HEAD
     <div style="text-align:right; margin-bottom:20px;">
 
     <?php if (is_logged_in()): ?>
@@ -102,6 +107,8 @@ $stmt->close();
     <?php endif; ?>
 
 </div>
+=======
+>>>>>>> 0ffc3b574ed2569fc4f3197e64c04ca930bc9038
     <h1>📚 BookSwap Community</h1>
     <p>ยินดีต้อนรับสู่ระบบแลกเปลี่ยนหนังสือสำหรับชาวหอสมุด ปลอดภัยด้วยแต้มมัดจำผ่านระบบกลาง</p>
     <hr style="border: 0; height: 1px; background: #dcdde1;">
