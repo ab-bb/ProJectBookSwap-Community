@@ -1,2 +1,10 @@
+# Database credentials
 config.php
+db.php
+/config/db.php
+
+# System files
 .DS_Store
+
+# Log files
+*.log
