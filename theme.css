@@ -1,0 +1,410 @@
+/* ==========================================================
+   BookSwap — Secret Library theme
+   ห้องสมุดลับยามค่ำคืน: มืดลึกลับ แต่อบอุ่นด้วยแสงเทียน
+   ========================================================== */
+:root {
+    --night: #120b0a;          /* ห้องมืด */
+    --leather: #241611;        /* หนังสือปกหนัง */
+    --leather-2: #33201a;
+    --candle: #f0b45a;         /* แสงเทียน */
+    --brass: #b98a4a;          /* ทองเหลืองเก่า */
+    --parchment: #f1e3c9;      /* กระดาษเก่า */
+    --parchment-dim: #b9a88a;
+    --moss: #6f8a3c;           /* เขียวมอส */
+    --moss-dark: #54692b;
+    --wine: #7a2e2e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Sarabun', sans-serif;
+    color: var(--parchment);
+    background-color: var(--night);
+    /* แสงเทียนซ้าย-ขวา + ขอบมืด (vignette) */
+    background-image:
+        radial-gradient(ellipse 45% 35% at 8% 6%, rgba(240,180,90,.22), transparent 70%),
+        radial-gradient(ellipse 40% 30% at 94% 12%, rgba(240,180,90,.14), transparent 70%),
+        radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.65) 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* ชั้นหนังสือเงาๆ เป็นฉากหลัง */
+body::before {
+    content: '';
+    position: fixed; inset: 0;
+    z-index: -2;
+    background:
+        repeating-linear-gradient(90deg,
+            #2b1a14 0 14px, #1a100d 14px 17px,
+            #3a2419 17px 29px, #1a100d 29px 31px,
+            #25160f 31px 40px, #150d0a 40px 43px,
+            #432a1c 43px 52px, #1a100d 52px 55px),
+        var(--night);
+    background-size: 55px 70px;
+    opacity: .28;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+            mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+}
+
+/* หมอกบางๆ ลอยผ่าน */
+body::after {
+    content: '';
+    position: fixed; inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 50% 20% at 30% 80%, rgba(241,227,201,.06), transparent 70%),
+        radial-gradient(ellipse 45% 18% at 75% 60%, rgba(241,227,201,.05), transparent 70%);
+    animation: fog 40s ease-in-out infinite alternate;
+}
+@keyframes fog { to { transform: translateX(8%) translateY(-3%); } }
+
+/* ละอองฝุ่นในแสงเทียน */
+.dust { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.dust i {
+    position: absolute; bottom: -10px;
+    width: 3px; height: 3px; border-radius: 50%;
+    background: var(--candle);
+    box-shadow: 0 0 6px 1px rgba(240,180,90,.6);
+    opacity: 0;
+    animation: drift 18s linear infinite;
+}
+.dust i:nth-child(1) { left: 8%;  animation-delay: 0s;  }
+.dust i:nth-child(2) { left: 22%; animation-delay: 4s;  animation-duration: 22s; }
+.dust i:nth-child(3) { left: 41%; animation-delay: 9s;  }
+.dust i:nth-child(4) { left: 63%; animation-delay: 2s;  animation-duration: 25s; }
+.dust i:nth-child(5) { left: 78%; animation-delay: 12s; }
+.dust i:nth-child(6) { left: 92%; animation-delay: 7s;  animation-duration: 20s; }
+@keyframes drift {
+    0%   { transform: translate(0,0); opacity: 0; }
+    10%  { opacity: .8; }
+    90%  { opacity: .5; }
+    100% { transform: translate(40px,-105vh); opacity: 0; }
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+    padding: 14px 30px;
+    background: linear-gradient(to bottom, #1c110e, rgba(28,17,14,.92));
+    border-bottom: 1px solid var(--brass);
+    box-shadow: 0 6px 24px rgba(0,0,0,.6), inset 0 -1px 0 rgba(240,180,90,.25);
+    position: sticky; top: 0; z-index: 10;
+}
+.navbar-brand {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--candle); text-decoration: none;
+    font-family: 'Noto Serif Thai', serif; font-weight: 700; font-size: 24px;
+    text-shadow: 0 0 14px rgba(240,180,90,.5);
+}
+.nav-links { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+.nav-links a { color: var(--parchment); text-decoration: none; font-size: 15px; transition: color .2s; }
+.nav-links a:hover { color: var(--candle); }
+.nav-info-block { display: flex; align-items: center; gap: 16px; color: var(--parchment-dim); font-size: 15px; }
+.nav-info-block .points { color: var(--candle); font-weight: 600; }
+
+.btn-add {
+    background: var(--moss-dark); padding: 8px 14px; border-radius: 6px;
+    border: 1px solid var(--moss); color: #fff !important;
+}
+.btn-add:hover { background: var(--moss); }
+.logout-btn {
+    background: transparent; color: var(--parchment-dim);
+    border: 1px solid #5a3a30; padding: 8px 14px; border-radius: 6px;
+    cursor: pointer; font-family: inherit; font-size: 14px; transition: all .2s;
+}
+.logout-btn:hover { border-color: var(--wine); color: #fff; background: var(--wine); }
+
+/* ---------- Hero ---------- */
+.hero-banner {
+    text-align: center;
+    padding: 70px 20px 60px;
+    position: relative;
+    border-bottom: 1px dashed rgba(185,138,74,.5);
+}
+.hero-banner::before {   /* แสงเทียนส่องลงมาบนหัวข้อ */
+    content: ''; position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+    width: min(720px, 90%); height: 100%;
+    background: radial-gradient(ellipse at top, rgba(240,180,90,.18), transparent 70%);
+    pointer-events: none;
+}
+.hero-banner .key { font-size: 34px; color: var(--candle); filter: drop-shadow(0 0 10px rgba(240,180,90,.7)); }
+.hero-banner h1 {
+    position: relative;
+    font-family: 'Noto Serif Thai', serif; font-weight: 700;
+    font-size: clamp(28px, 5vw, 44px); line-height: 1.35;
+    margin: 10px 0 12px; color: var(--parchment);
+    text-shadow: 0 0 24px rgba(240,180,90,.35), 0 2px 0 #000;
+}
+.hero-banner p { position: relative; max-width: 620px; margin: 0 auto; color: var(--parchment-dim); line-height: 1.8; }
+
+/* ---------- Layout ---------- */
+.container { max-width: 1200px; margin: auto; padding: 40px 20px 70px; }
+.section-title {
+    font-family: 'Noto Serif Thai', serif; font-size: 24px; color: var(--candle);
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 12px; margin: 40px 0 28px;
+    border-bottom: 1px solid rgba(185,138,74,.45);
+}
+
+/* ---------- ตราประทับประจำวัน (กิจกรรมเก็บแต้ม) ---------- */
+.stamp-card {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 26px 30px;
+    background: linear-gradient(135deg, var(--leather-2), var(--leather));
+    border: 1px solid var(--brass);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5), inset 0 0 0 4px rgba(18,11,10,.6), inset 0 0 0 5px rgba(185,138,74,.25);
+}
+.stamp-info h3 { margin: 0 0 6px; font-family: 'Noto Serif Thai', serif; font-size: 22px; color: var(--candle); }
+.stamp-info p { margin: 0; color: var(--parchment-dim); font-size: 14px; line-height: 1.7; }
+.stamp-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.stamp {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: grid; place-items: center;
+    border: 1.5px dashed #6b4a36; color: #6b4a36; font-size: 14px;
+}
+.stamp.done {
+    border: 2px solid var(--candle); color: var(--candle);
+    background: radial-gradient(circle, rgba(240,180,90,.25), transparent 70%);
+    box-shadow: 0 0 12px rgba(240,180,90,.35);
+    transform: rotate(-8deg);
+}
+.stamp.bonus { width: 52px; height: 52px; border-color: var(--wine); color: #d98b8b; }
+.stamp.bonus.done { border-color: var(--candle); color: var(--candle); }
+.btn-checkin {
+    background: var(--candle); color: #2a1a0a; border: none;
+    padding: 14px 26px; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: box-shadow .25s, transform .15s;
+    box-shadow: 0 0 18px rgba(240,180,90,.35);
+}
+.btn-checkin:hover { box-shadow: 0 0 30px rgba(240,180,90,.65); transform: translateY(-1px); }
+.btn-checkin:disabled { background: #3a2a22; color: var(--parchment-dim); box-shadow: none; cursor: default; transform: none; }
+
+/* ---------- ชั้นวาง & การ์ด ---------- */
+.bookshelf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 28px; }
+.book-card {
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 24px 24px 22px 28px;
+    background: linear-gradient(160deg, var(--leather-2), var(--leather));
+    border: 1px solid #4a3024;
+    border-radius: 6px 12px 12px 6px;     /* เหมือนสันปกหนังสือ */
+    box-shadow: 0 8px 20px rgba(0,0,0,.45);
+    transition: box-shadow .3s, border-color .3s, transform .3s;
+}
+.book-card::before {   /* สันหนังสือ */
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 10px;
+    background: linear-gradient(to right, #5a3a28, #3a2418);
+    border-right: 1px solid var(--brass);
+}
+.book-card:hover { transform: translateY(-4px); border-color: var(--brass); box-shadow: 0 0 26px rgba(240,180,90,.18), 0 14px 28px rgba(0,0,0,.6); }
+.book-card.taken { opacity: .55; filter: grayscale(.5); }
+.book-title { margin: 0 0 6px; font-family: 'Noto Serif Thai', serif; font-size: 20px; color: var(--parchment); overflow-wrap: anywhere; }
+.book-author { margin: 0 0 12px; font-size: 14px; color: var(--parchment-dim); font-style: italic; overflow-wrap: anywhere; }
+.badge {
+    display: inline-block; margin-bottom: 10px; max-width: 100%;
+    padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: rgba(185,138,74,.15); color: var(--candle); border: 1px solid rgba(185,138,74,.45);
+    overflow-wrap: anywhere;
+}
+.book-meta { margin: 5px 0; font-size: 14px; color: var(--parchment-dim); }
+.book-meta strong { color: var(--parchment); }
+.points-tag { display: flex; align-items: center; gap: 6px; margin: 12px 0; font-size: 18px; font-weight: 700; color: var(--candle); }
+.book-footer { border-top: 1px dashed rgba(185,138,74,.35); padding-top: 10px; }
+.book-owner { margin: 0 0 10px; font-size: 12px; color: var(--parchment-dim); }
+.book-gone { margin: 0; text-align: center; color: #8a7662; font-size: 14px; }
+.btn-swap {
+    display: block; text-align: center; text-decoration: none; cursor: pointer;
+    padding: 12px 15px; border-radius: 8px; font-weight: 700; color: #fff;
+    background: var(--moss-dark); border: 1px solid var(--moss);
+    transition: background .2s, box-shadow .2s;
+}
+button.btn-swap { width: 100%; font-family: inherit; font-size: 16px; }
+.btn-swap:hover { background: var(--moss); box-shadow: 0 0 16px rgba(111,138,60,.5); }
+
+/* ---------- แจ้งเตือน ---------- */
+.alert { padding: 14px 18px; border-radius: 8px; margin-bottom: 22px; font-weight: 600; border: 1px solid; }
+.alert-success { background: rgba(111,138,60,.18); color: #c5dc92; border-color: var(--moss); }
+.alert-error   { background: rgba(122,46,46,.3);  color: #f0b3b3; border-color: var(--wine); }
+
+.empty { text-align: center; color: var(--parchment-dim); padding: 50px 20px; }
+
+/* ---------- Accessibility ---------- */
+a:focus-visible, button:focus-visible { outline: 2px solid var(--candle); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+    body::after, .dust i { animation: none; }
+    .dust { display: none; }
+    .book-card, .btn-checkin { transition: none; }
+}
+@media (max-width: 600px) {
+    .navbar { padding: 12px 16px; }
+    .stamp-card { padding: 20px; }
+}
+
+/* ==========================================================
+   หน้าฟอร์ม: login / register / add_book
+   ========================================================== */
+body.centered { display: flex; justify-content: center; align-items: center; padding: 24px; }
+
+.form-container {
+    position: relative; width: 100%; max-width: 420px;
+    padding: 38px 36px 32px; text-align: center;
+    background: linear-gradient(160deg, var(--leather-2), var(--leather));
+    border: 1px solid var(--brass); border-radius: 14px;
+    box-shadow: 0 0 60px rgba(240,180,90,.12), 0 18px 40px rgba(0,0,0,.65),
+                inset 0 0 0 4px rgba(18,11,10,.6), inset 0 0 0 5px rgba(185,138,74,.25);
+}
+.form-container.wide { max-width: 500px; }
+.form-logo { font-size: 34px; color: var(--candle); filter: drop-shadow(0 0 10px rgba(240,180,90,.6)); }
+.form-container h2 {
+    margin: 10px 0 6px; font-family: 'Noto Serif Thai', serif; font-size: 24px;
+    color: var(--parchment); text-shadow: 0 0 18px rgba(240,180,90,.3);
+}
+.form-container .subtitle { margin: 0 0 24px; color: var(--parchment-dim); font-size: 14px; line-height: 1.7; }
+.form-container .alert { text-align: left; font-size: 14px; font-weight: 400; margin-bottom: 18px; }
+
+.points-box {
+    margin-bottom: 20px; padding: 10px 12px; border-radius: 8px; font-size: 14px; line-height: 1.6;
+    background: rgba(240,180,90,.1); color: var(--candle); border: 1px dashed rgba(240,180,90,.5);
+}
+
+.input-group { text-align: left; margin-bottom: 18px; }
+.input-group label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; color: var(--parchment); }
+.input-group input, .input-group select {
+    width: 100%; padding: 12px; font: inherit; font-size: 15px;
+    color: var(--parchment); background: #160d0a;
+    border: 1px solid #4a3024; border-radius: 8px;
+    transition: border-color .2s, box-shadow .2s;
+}
+.input-group input::placeholder { color: #7d6a58; }
+.input-group input:focus, .input-group select:focus {
+    outline: none; border-color: var(--candle); box-shadow: 0 0 0 3px rgba(240,180,90,.18);
+}
+.input-group select option { background: #160d0a; color: var(--parchment); }
+.input-group input:-webkit-autofill {
+    -webkit-text-fill-color: var(--parchment);
+    -webkit-box-shadow: 0 0 0 40px #160d0a inset;
+}
+
+.btn-submit {
+    width: 100%; margin-top: 8px; padding: 14px;
+    font: inherit; font-size: 16px; font-weight: 700; color: #fff; cursor: pointer;
+    background: var(--moss-dark); border: 1px solid var(--moss); border-radius: 8px;
+    transition: background .2s, box-shadow .2s;
+}
+.btn-submit:hover { background: var(--moss); box-shadow: 0 0 18px rgba(111,138,60,.5); }
+
+.footer-link { margin-top: 24px; font-size: 14px; color: var(--parchment-dim); }
+.footer-link a { color: var(--candle); font-weight: 700; text-decoration: none; }
+.footer-link a:hover { text-decoration: underline; }
+
+/* ==========================================================
+   หน้า "คำขอของฉัน"
+   ========================================================== */
+.nav-badge {
+    display: inline-block; min-width: 20px; margin-left: 4px; padding: 1px 7px;
+    border-radius: 10px; background: var(--candle); color: #2a1a0a;
+    font-size: 12px; font-weight: 700; text-align: center;
+}
+.swap-list { display: grid; gap: 18px; }
+.swap-card {
+    position: relative; padding: 20px 24px 18px 30px;
+    background: linear-gradient(160deg, var(--leather-2), var(--leather));
+    border: 1px solid #4a3024; border-radius: 6px 12px 12px 6px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.45);
+}
+.swap-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 10px;
+    background: linear-gradient(to right, #5a3a28, #3a2418); border-right: 1px solid var(--brass);
+}
+.swap-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.swap-meta { margin: 6px 0 0; font-size: 14px; line-height: 1.8; color: var(--parchment-dim); overflow-wrap: anywhere; }
+.swap-meta strong { color: var(--parchment); }
+.status { padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid; }
+.status.wait { color: var(--candle); border-color: rgba(240,180,90,.55); background: rgba(240,180,90,.1); }
+.status.go   { color: #c5dc92; border-color: var(--moss); background: rgba(111,138,60,.18); }
+.status.done { color: #fff; border-color: var(--moss); background: var(--moss-dark); }
+.status.bad  { color: #f0b3b3; border-color: var(--wine); background: rgba(122,46,46,.3); }
+.swap-actions {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    margin-top: 16px; padding-top: 14px; border-top: 1px dashed rgba(185,138,74,.35);
+}
+.swap-actions form { display: flex; gap: 8px; margin: 0; }
+.swap-actions input[type=text] {
+    padding: 9px 12px; font: inherit; font-size: 14px; color: var(--parchment);
+    background: #160d0a; border: 1px solid #4a3024; border-radius: 8px; min-width: 180px;
+}
+.swap-actions input[type=text]:focus { outline: none; border-color: var(--candle); box-shadow: 0 0 0 3px rgba(240,180,90,.18); }
+.btn-sm { padding: 9px 16px; font: inherit; font-size: 14px; font-weight: 700; color: #fff; border: 1px solid; border-radius: 8px; cursor: pointer; transition: background .2s, box-shadow .2s; }
+.btn-ok { background: var(--moss-dark); border-color: var(--moss); }
+.btn-ok:hover { background: var(--moss); box-shadow: 0 0 14px rgba(111,138,60,.5); }
+.btn-no { background: transparent; border-color: #6b3a36; color: #e0a0a0; }
+.btn-no:hover { background: var(--wine); color: #fff; }
+
+/* ==========================================================
+   โปรไฟล์ / รีวิว / แชท
+   ========================================================== */
+.user-link { color: var(--candle); text-decoration: none; font-weight: 600; }
+.user-link:hover { text-decoration: underline; }
+.rating-mini { margin-left: 6px; color: var(--candle); font-weight: 600; }
+.rating-mini.muted { color: #8a7662; font-weight: 400; }
+.btn-ghost { background: transparent; border-color: rgba(185,138,74,.5); color: var(--parchment); text-decoration: none; display: inline-block; }
+.btn-ghost:hover { border-color: var(--candle); color: var(--candle); }
+.stars { color: var(--candle); letter-spacing: 2px; }
+
+.profile-head {
+    padding: 28px 30px; margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--leather-2), var(--leather));
+    border: 1px solid var(--brass); border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5), inset 0 0 0 4px rgba(18,11,10,.6), inset 0 0 0 5px rgba(185,138,74,.25);
+}
+.profile-head h1 { margin: 0 0 4px; font-family: 'Noto Serif Thai', serif; font-size: 28px; color: var(--parchment); display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.profile-head .since { margin: 0; color: var(--parchment-dim); font-size: 14px; }
+.stat-row { display: flex; flex-wrap: wrap; margin-top: 22px; border-top: 1px dashed rgba(185,138,74,.4); padding-top: 18px; }
+.stat { flex: 1 1 150px; padding: 0 20px 0 0; }
+.stat + .stat { padding-left: 20px; border-left: 1px solid rgba(185,138,74,.3); }
+.stat b { display: block; font-size: 26px; color: var(--candle); font-family: 'Noto Serif Thai', serif; }
+.stat span { font-size: 13px; color: var(--parchment-dim); }
+.review-item { padding: 16px 20px; background: var(--leather); border: 1px solid #4a3024; border-radius: 8px; margin-bottom: 12px; }
+.review-item .who { font-size: 13px; color: var(--parchment-dim); }
+.review-item p { margin: 6px 0 0; line-height: 1.7; overflow-wrap: anywhere; }
+
+.review-form { margin-top: 14px; padding-top: 14px; border-top: 1px dashed rgba(185,138,74,.35); display: grid; gap: 10px; }
+.review-form select, .review-form textarea {
+    width: 100%; padding: 10px 12px; font: inherit; font-size: 14px; color: var(--parchment);
+    background: #160d0a; border: 1px solid #4a3024; border-radius: 8px;
+}
+.review-form textarea { min-height: 70px; resize: vertical; }
+.review-form select:focus, .review-form textarea:focus { outline: none; border-color: var(--candle); box-shadow: 0 0 0 3px rgba(240,180,90,.18); }
+.review-form select option { background: #160d0a; }
+
+.chat-head { margin-bottom: 14px; }
+.chat-head h1 { margin: 0 0 4px; font-family: 'Noto Serif Thai', serif; font-size: 22px; color: var(--candle); overflow-wrap: anywhere; }
+.chat-head p { margin: 0; color: var(--parchment-dim); font-size: 14px; }
+.chat-box {
+    height: min(60vh, 520px); overflow-y: auto; padding: 18px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: rgba(18,11,10,.7); border: 1px solid #4a3024; border-radius: 10px;
+}
+.chat-empty { margin: auto; color: #8a7662; font-size: 14px; }
+.msg { max-width: 78%; }
+.msg.mine { align-self: flex-end; }
+.msg-who { font-size: 12px; color: var(--parchment-dim); margin-bottom: 3px; }
+.msg.mine .msg-who { text-align: right; }
+.msg-body { padding: 10px 14px; border-radius: 12px; line-height: 1.6; overflow-wrap: anywhere; white-space: pre-wrap; background: var(--leather-2); border: 1px solid #4a3024; }
+.msg.mine .msg-body { background: rgba(111,138,60,.25); border-color: var(--moss); }
+.chat-form { display: flex; gap: 10px; margin-top: 12px; }
+.chat-form input {
+    flex: 1; padding: 12px; font: inherit; font-size: 15px; color: var(--parchment);
+    background: #160d0a; border: 1px solid #4a3024; border-radius: 8px;
+}
+.chat-form input:focus { outline: none; border-color: var(--candle); box-shadow: 0 0 0 3px rgba(240,180,90,.18); }
+.chat-form .btn-sm { padding: 0 22px; }
+.chat-note { margin-top: 12px; color: var(--parchment-dim); font-size: 14px; text-align: center; }
+.chat-err { margin-top: 8px; color: #f0b3b3; font-size: 14px; min-height: 1.2em; }

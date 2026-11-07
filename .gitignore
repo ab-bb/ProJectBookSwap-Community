@@ -1,2 +1,16 @@
+
+# Database credentials
+/config/db.php
+/db.php
 config.php
+
+# System files
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
